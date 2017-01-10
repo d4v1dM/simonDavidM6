@@ -1,6 +1,7 @@
-package simonDavidM;
+package partnerCodeInHerePlease;
 
 import gui.components.Components;
+import simonDavidM.ProgressInterfaceDavid;
 
 import java.awt.*;
 

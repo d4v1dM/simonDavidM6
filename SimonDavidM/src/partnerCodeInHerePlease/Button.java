@@ -1,8 +1,9 @@
-package simonDavidM;
+package partnerCodeInHerePlease;
 
 
 import gui.components.Action;
 import gui.components.Components;
+import simonDavidM.ButtonInterfaceDavid;
 
 import java.awt.*;
 
