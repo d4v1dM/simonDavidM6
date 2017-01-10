@@ -84,7 +84,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	public MoveInterfaceDavid randomMove() {
 		// TODO Auto-generated method stub
 		ButtonInterfaceDavid newMove; // new move that will be returned.
-		newMove = validMoves[(int) (Math.random() * validMoves.length)];
+		newMove = validMoves[(int) (Math.random() * validMoves.length) * 10];
 		return getMove(newMove);
 	}
 
