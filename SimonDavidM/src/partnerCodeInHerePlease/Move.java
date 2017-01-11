@@ -7,8 +7,11 @@ import simonDavidM.MoveInterfaceDavid;
  * Created by dav1d on 1/9/17.
  */
 public class Move implements MoveInterfaceDavid {
-    @Override
+    private ButtonInterfaceDavid b;
+    public Move(ButtonInterfaceDavid b){
+    	this.b=b;
+    }
     public ButtonInterfaceDavid getButton() {
-        return null;
+        return b;
     }
 }

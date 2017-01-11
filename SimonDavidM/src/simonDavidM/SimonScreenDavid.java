@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import gui.components.*;
+import partnerCodeInHerePlease.ButtonD;
+import partnerCodeInHerePlease.Move;
+import partnerCodeInHerePlease.Progress;
 
 public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	private ProgressInterfaceDavid progress; // what is the progress.
@@ -14,8 +17,8 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	private int lastMove; // last number inputted.
 	private int sequenceIdx;
 	private ButtonInterfaceDavid[] validMoves; // possible moves.
-	private int numOfButtons = 6; // number of buttons on screen, same number as number of colors.
-	private Color[] colors = {Color.blue,Color.black, Color.gray, Color.ORANGE, Color.RED};
+	private int numOfButtons; // number of buttons on screen, same number as number of colors.
+	private Color colors;
 	public SimonScreenDavid(int width, int height) {
 		super(width, height);
 		Thread app = new Thread(this);
@@ -25,7 +28,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
 		label.setText("");
 		nextRound();
 
@@ -83,31 +86,36 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 
 	public MoveInterfaceDavid randomMove() {
 		// TODO Auto-generated method stub
-		ButtonInterfaceDavid newMove; // new move that will be returned.
-		newMove = validMoves[(int) (Math.random() * validMoves.length) * 10];
-		return getMove(newMove);
+		
+		int random = (int) (Math.random()*validMoves.length);
+		while(random == lastMove){
+			random = (int) (Math.random()*validMoves.length);
+		}
+		lastMove = random;
+		return getMove(validMoves[random]);
 	}
 
 	public MoveInterfaceDavid getMove(ButtonInterfaceDavid newMove) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Move(newMove);
 	}
 
 	public ProgressInterfaceDavid getProgress() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Progress();
 	}
 	public ButtonInterfaceDavid getAButton(){
-		return null;
+		return new ButtonD();
 	}
-	public void addButtons(ArrayList<Visible> objects) {
+	public void addButtons(ArrayList<Visible> viewObjects) {
 		// TODO Auto-generated method stub
-
-		for(int i = 0; i < numOfButtons; ++i){
+		int numOfButtons = 6;
+		Color[] colors= {Color.blue,Color.black, Color.gray, Color.ORANGE, Color.RED};
+		for(int i = 0; i < numOfButtons; i++){
 			ButtonInterfaceDavid b = getAButton();
 			b.setColor(colors[i]);
-			b.setX(i * 50);
-			b.setY(i * 50);
+			b.setX(getWidth()/2+10*(int)Math.cos(Math.PI/3*(i)));
+			b.setY(getHeight()/2+10*(int)Math.sin(Math.PI/3*(i)));
 			// add action for when the button is clicked.
 			b.setAction(new Action() {
 				@Override
@@ -137,7 +145,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 					}
 				}
 			});
-			objects.add(b); // add button to view object vector.
+			viewObjects.add(b); // add button to view object vector.
 		}
 	}
 	public void changeText(String s){
@@ -148,6 +156,9 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	protected void gameOver() {
+		progress.gameOver();
 	}
 
 }
