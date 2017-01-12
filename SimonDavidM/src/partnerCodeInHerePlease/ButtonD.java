@@ -35,7 +35,7 @@ public class ButtonD extends Components implements ButtonInterfaceDavid {
 
     @Override
     public void setColor(Color c) {
-    	this.color =color;
+    	this.color = c;
     	update();
     }
 
