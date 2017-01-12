@@ -93,6 +93,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		}
 		lastMove = random;
 		return getMove(validMoves[random]);
+		//
 	}
 
 	public MoveInterfaceDavid getMove(ButtonInterfaceDavid newMove) {
