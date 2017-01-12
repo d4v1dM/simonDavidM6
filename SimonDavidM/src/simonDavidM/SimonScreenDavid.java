@@ -51,7 +51,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 
 	public void playSequence() {
 		ButtonInterfaceDavid b = null;
-		for(int i = 0; i < moves.size(); ++i){
+		for(int i = 0; i < moves.size(); i++){
 			if(b != null) b.dim(); // turn off color.
 			b = moves.get(i).getButton(); // get the button of the move.
 			b.highlight();
@@ -85,7 +85,12 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	}
 
 	public MoveInterfaceDavid randomMove() {
-		return null;
+		int select = (int) (Math.random()*validMoves.length);
+		while(select == lastMove){
+			select = (int) (Math.random()*validMoves.length);
+		}
+		lastMove = select;
+		return new Move(validMoves[select]);
 		 
 		
 	}
