@@ -42,7 +42,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		progress.setRound(roundNum);
 		progress.setSequenceSize(moves.size());
 		changeText("Simon's turn."); // notify the user to follow new sequence.
-		label.setText(""); // reset screen message.
+		label.setText("Let's play a game"); // reset screen message.
 		playSequence(); // play the sequence of moves.
 		changeText("Your turn!"); // new screen message to input user's guess.
 		acceptingInput = true; // first phase is done --> accept input.
@@ -55,9 +55,9 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 			if(b != null) b.dim(); // turn off color.
 			b = moves.get(i).getButton(); // get the button of the move.
 			b.highlight();
-			int sleepTime = (roundNum*roundNum) % (roundNum * 2); // higher the round, lower the sleep time.
+			// higher the round, lower the sleep time.
 			try {
-				Thread.sleep(sleepTime);
+				Thread.sleep((roundNum*roundNum) % (roundNum * 2));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -85,8 +85,8 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	}
 
 	public MoveInterfaceDavid randomMove() {
-		// TODO Auto-generated method stub
-		return null; 
+		return null;
+		 
 		
 	}
 
@@ -138,6 +138,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 								}
 							}
 							else progress.gameOver();
+							return;
 						}
 					}
 				});
