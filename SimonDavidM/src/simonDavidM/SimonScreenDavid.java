@@ -86,14 +86,8 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 
 	public MoveInterfaceDavid randomMove() {
 		// TODO Auto-generated method stub
+		return null; 
 		
-		int random = (int) (Math.random()*validMoves.length);
-		while(random == lastMove){
-			random = (int) (Math.random()*validMoves.length);
-		}
-		lastMove = random;
-		return getMove(validMoves[random]);
-		//
 	}
 
 	public MoveInterfaceDavid getMove(ButtonInterfaceDavid newMove) {
@@ -109,7 +103,7 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		return new ButtonD();
 	}
 	public void addButtons(ArrayList<Visible> viewObjects) {
-		// TODO Auto-generated method stub
+		
 		int numOfButtons = 6;
 		Color[] colors= {Color.blue,Color.black, Color.gray, Color.ORANGE, Color.RED};
 		for(int i = 0; i < numOfButtons; i++){

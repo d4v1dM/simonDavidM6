@@ -14,12 +14,23 @@ public class ButtonD extends Components implements ButtonInterfaceDavid {
     private boolean lit; // keep track whether button is on or off.
     private Color color;
     private Action action;
+	private int x;
+	private int y;
     public ButtonD() {
         super(0, 0, 50, 50);
         lit=false;
         update();
     }
+    public void setX(int x) {
+		this.x = x;
+		update();
+	}
 
+	@Override
+	public void setY(int y) {
+		this.y = y;
+		update();
+	}
     @Override
     public boolean isHovered(int x, int y) {
     	if(x>getX()&&x<(getX()+getWidth())&&y>getY()&&y<(getY()+getHeight()))
