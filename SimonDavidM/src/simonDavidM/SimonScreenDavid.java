@@ -113,43 +113,43 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		Color[] colors= {Color.blue,Color.black, Color.gray, Color.ORANGE, Color.RED};
 		for(int i = 0; i < numOfButtons; i++){
 			ButtonInterfaceDavid b = getAButton();
-			if(i< 0 || i > numOfButtons.length) {
-				
-			}
-			b.setColor(colors[i]);
-			b.setX(10*(int)Math.cos(Math.PI/3*(i)));
-			b.setY(10*(int)Math.sin(Math.PI/3*(i)));
-			// add action for when the button is clicked.
-			b.setAction(new Action() {
-				@Override
-				public void act() {
-					if(acceptingInput){
-						Thread blink = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								b.highlight(); // show color
-								try {
-									Thread.sleep(800);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+			if(i< 0 || i > numOfButtons) {
+				b.setColor(colors[i]);
+				b.setX(10*(int)Math.cos(Math.PI/3*(i)));
+				b.setY(10*(int)Math.sin(Math.PI/3*(i)));
+				// add action for when the button is clicked.
+				b.setAction(new Action() {
+					@Override
+					public void act() {
+						if(acceptingInput){
+							Thread blink = new Thread(new Runnable() {
+								@Override
+								public void run() {
+									b.highlight(); // show color
+									try {
+										Thread.sleep(800);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+									b.dim(); // hide color.
 								}
-								b.dim(); // hide color.
+							});
+							blink.start(); // execute thread.
+							if(moves.get(sequenceIdx).getButton() == b){
+								++sequenceIdx;
+								if(sequenceIdx == moves.size()){ // check if round is over.
+									Thread nextRound = new Thread(SimonScreenDavid.this);
+									nextRound.start(); // start next round.
+								}
 							}
-						});
-						blink.start(); // execute thread.
-						if(moves.get(sequenceIdx).getButton() == b){
-							++sequenceIdx;
-							if(sequenceIdx == moves.size()){ // check if round is over.
-								Thread nextRound = new Thread(SimonScreenDavid.this);
-								nextRound.start(); // start next round.
-							}
+							else progress.gameOver();
 						}
-						else progress.gameOver();
 					}
-				}
-			});
-			viewObjects.add(b); // add button to view object vector.
-		}
+				});
+				viewObjects.add(b); // add button to view object vector.
+			}
+			}
+		
 	}
 	public void changeText(String s){
 		label.setText(s);
