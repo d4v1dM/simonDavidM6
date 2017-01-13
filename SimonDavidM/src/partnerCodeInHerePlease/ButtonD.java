@@ -14,27 +14,16 @@ public class ButtonD extends Components implements ButtonInterfaceDavid {
     private boolean lit; // keep track whether button is on or off.
     private Color color;
     private Action action;
-	private int x;
-	private int y;
-    public ButtonD() {
-        super(0, 0, 50, 50);
-        lit=false;
-        update();
-    }
-    public void setX(int x) {
-		this.x = x;
-		update();
-	}
 
-	@Override
-	public void setY(int y) {
-		this.y = y;
-		update();
-	}
+    public ButtonD(int i, int j) {
+        super(i, j, 50, 50);
+        
+    }
+  
     @Override
     public boolean isHovered(int x, int y) {
     	if(x>getX()&&x<(getX()+getWidth())&&y>getY()&&y<(getY()+getHeight()))
-			return true;
+		return true;
 		return false;
     }
 
@@ -47,39 +36,49 @@ public class ButtonD extends Components implements ButtonInterfaceDavid {
     @Override
     public void setColor(Color c) {
     	this.color = c;
-    	update();
+    	
     }
 
     @Override
-    public void setAction(Action action) {
-    	this.action = action;
+    public void setAction(Action a) {
+    	this.action = a;
     	update();
     }
 
     @Override
     public void highlight() {
+    		
     	lit = true;
     	update();
     }
 
     @Override
     public void dim() {
+    
     	lit=false;
     	update();
     }
-    public void setLit(boolean l){ lit = l;}
-  boolean getLit(){ return lit;}
+  
 
     @Override
     public void update(Graphics2D g) {
     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	if(getLit()){ // if button is on.
-    		g.setColor(Color.lightGray);
-    		g.fillOval(0, 0, getWidth(), getHeight());
+    	if(lit){ // if button is on.
+    		g.setColor(this.color);
+    		
         }
         else{ // if button is off.
-        	g.setColor(color);
-			g.fillOval(0, 0, getWidth(), getHeight());
+        	g.setColor(Color.lightGray);
+    		g.fillOval(0, 0, 60, 60);
+    		g.setColor(Color.black);
+    		g.drawOval(0, 0, 59, 59);
         }
     }
+
+	@Override
+	public Color getColor() {
+		return this.color;
+	}
+
+	
 }

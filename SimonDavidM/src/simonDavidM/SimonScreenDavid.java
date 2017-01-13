@@ -3,13 +3,19 @@ package simonDavidM;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import gui.components.*;
+
+import gui.components.Action;
+import gui.components.ClickableScreen;
+import gui.components.TextArea;
+import gui.components.TextLabel;
+import gui.components.Visible;
 import partnerCodeInHerePlease.ButtonD;
 import partnerCodeInHerePlease.Move;
 import partnerCodeInHerePlease.Progress;
 
 public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	private ProgressInterfaceDavid progress; // what is the progress.
+	private boolean gameOver;
 	private ArrayList<MoveInterfaceDavid> moves; // simons says?
 	private int roundNum; // what round is it?
 	private boolean acceptingInput; // input is valid?
@@ -17,37 +23,37 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	private int lastMove; // last number inputted.
 	private int sequenceIdx;
 	private ButtonInterfaceDavid[] validMoves; // possible moves.
-	private int numOfButtons; // number of buttons on screen, same number as number of colors.
-	private Color colors;
+	
 	public SimonScreenDavid(int width, int height) {
 		super(width, height);
+		roundNum = 0;
+		lastMove = -1;
 		Thread app = new Thread(this);
+		acceptingInput = false;
 		app.start();
+		
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void run() {
 		
-		label.setText("");
-		nextRound();
-
-	}
-
-	public void nextRound() {
 		acceptingInput = false;
-		++roundNum; // new round = increase round.
-		moves.add(randomMove()); // simon says new move.
+		moves.add(getMove()); // simon says new move.
+		++roundNum;
 		// update current progress(state).
-		progress.setRound(roundNum);
-		progress.setSequenceSize(moves.size());
-		changeText("Simon's turn."); // notify the user to follow new sequence.
-		label.setText("Let's play a game"); // reset screen message.
+		progress.updateRound(roundNum,moves.size());
+		changeText("My move"); // notify the user to follow new sequence.
+		label.setText(""); // reset screen message.
 		playSequence(); // play the sequence of moves.
 		changeText("Your turn!"); // new screen message to input user's guess.
-		acceptingInput = true; // first phase is done --> accept input.
-		sequenceIdx = 0; // reset the sequence index.
+		sequenceIdx = 0;
+		label.setText("");
+		acceptingInput = true;
+
 	}
+
+	
 
 	public void playSequence() {
 		ButtonInterfaceDavid b = null;
@@ -70,99 +76,106 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	@Override
 	public void initAllObjects(ArrayList<Visible> viewObjects) {
 		// TODO Auto-generated method stub
-		addButtons(viewObjects);
-		progress = getProgress();
+		Color[] colors = {Color.red,Color.yellow,Color.blue,Color.orange,Color.green};
+		validMoves = new ButtonInterfaceDavid[colors.length];
 		label = new TextLabel(130,230,300,40,"Let's play Simon!");
+		progress = getProgress();
+		for(int i=0;i<validMoves.length;i++){
+			validMoves[i] = getAButton(10,50+(60*i));
+			ButtonInterfaceDavid b = validMoves[i];
+			b.setColor(colors[i]);
+			b.setAction(new Action() {
+				@Override
+				public void act() {
+					if(acceptingInput){
+						Thread blinks = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								b.highlight(); // show color
+								try {
+									Thread.sleep(800);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								b.dim(); // hide color.
+							}
+						});
+						blinks.start();
+		}
+		
+		if(sequenceIdx<moves.size()-1){
+			if(b.getColor() == moves.get(sequenceIdx).getButton().getColor()){
+				sequenceIdx++;
+			}
+			else{
+				progress.setgameOver();
+				 acceptingInput = false;
+				System.out.println("game over");
+			}
+		}
+		else{
+			Thread Game = new Thread(SimonScreenDavid.this);
+			Game.start();
+					}
+				}
+			}
+		);
 		moves = new ArrayList<MoveInterfaceDavid>();
-		//add 2 moves to start
-		lastMove = -1;
-		moves.add(randomMove());
-		moves.add(randomMove());
-		roundNum = 0;
+		moves.add(getMove());
+		moves.add(getMove());
+		
 		viewObjects.add(progress);
 		viewObjects.add(label);
-
-	}
-
-	public MoveInterfaceDavid randomMove() {
-		int select = (int) (Math.random()*validMoves.length);
-		while(select == lastMove){
-			select = (int) (Math.random()*validMoves.length);
 		}
-		lastMove = select;
-		return new Move(validMoves[select]);
-		 
-		
+
 	}
 
-	public MoveInterfaceDavid getMove(ButtonInterfaceDavid newMove) {
-		// TODO Auto-generated method stub
-		return new Move(newMove);
+	
+
+	public MoveInterfaceDavid getMove() {
+		int random = (int)(Math.random()*validMoves.length);
+		while(random == lastMove){
+			random = (int)(Math.random()*validMoves.length);
+		}
+		lastMove = random;
+		return new Move(validMoves[random]);
 	}
 
 	public ProgressInterfaceDavid getProgress() {
 		// TODO Auto-generated method stub
 		return new Progress();
 	}
-	public ButtonInterfaceDavid getAButton(){
-		return new ButtonD();
+	public ButtonInterfaceDavid getAButton(int i, int j ){
+		return new ButtonD(i,j);
 	}
-	public void addButtons(ArrayList<Visible> viewObjects) {
-		
-		int numOfButtons = 6;
-		Color[] colors= {Color.blue,Color.black, Color.gray, Color.ORANGE, Color.RED};
-		for(int i = 0; i < numOfButtons; i++){
-			ButtonInterfaceDavid b = getAButton();
-			if(i< 0 || i > numOfButtons) {
-				b.setColor(colors[i]);
-				b.setX(10*(int)Math.cos(Math.PI/3*(i)));
-				b.setY(10*(int)Math.sin(Math.PI/3*(i)));
-				// add action for when the button is clicked.
-				b.setAction(new Action() {
-					@Override
-					public void act() {
-						if(acceptingInput){
-							Thread blink = new Thread(new Runnable() {
-								@Override
-								public void run() {
-									b.highlight(); // show color
-									try {
-										Thread.sleep(800);
-									} catch (InterruptedException e) {
-										e.printStackTrace();
-									}
-									b.dim(); // hide color.
-								}
-							});
-							blink.start(); // execute thread.
-							if(moves.get(sequenceIdx).getButton() == b){
-								++sequenceIdx;
-								if(sequenceIdx == moves.size()){ // check if round is over.
-									Thread nextRound = new Thread(SimonScreenDavid.this);
-									nextRound.start(); // start next round.
-								}
-							}
-							else progress.gameOver();
-							return;
-						}
-					}
-				});
-				viewObjects.add(b); // add button to view object vector.
-			}
-			}
-		
-	}
+	
 	public void changeText(String s){
 		label.setText(s);
 		try {
+			label.setText(s);
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	protected void gameOver() {
-		progress.gameOver();
+	public void blinkSequence() {
+		for(MoveInterfaceDavid m:moves){
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			m.getButton().highlight();
+			try {
+				Thread.sleep((int)(1000*(1.0/roundNum)));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			m.getButton().dim();
+		}
 	}
+	
 
 }

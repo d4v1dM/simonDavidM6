@@ -1,12 +1,11 @@
 package simonDavidM;
 
 import gui.GUIApplication;
+import gui.Screen;
 
 public class SimonGameDavid extends GUIApplication {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	public SimonGameDavid(int width, int height) {
 		super(width, height);

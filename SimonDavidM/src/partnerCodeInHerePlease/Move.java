@@ -11,6 +11,7 @@ public class Move implements MoveInterfaceDavid {
     public Move(ButtonInterfaceDavid b){
     	this.b=b;
     }
+    @Override
     public ButtonInterfaceDavid getButton() {
         return b;
     }
