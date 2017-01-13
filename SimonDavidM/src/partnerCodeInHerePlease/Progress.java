@@ -1,5 +1,9 @@
 package partnerCodeInHerePlease;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import gui.components.Components;
 import simonDavidM.ProgressInterfaceDavid;
 
@@ -30,8 +34,7 @@ public class Progress extends Components implements ProgressInterfaceDavid {
     public void update(Graphics2D g) {
     	g = clear();
     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		int fontSize = 12;
-		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+		
     	if(gameOver){ // if game is over:
     		g.setColor(Color.red);
 			g.fillRect(0, 0, width, 100);

@@ -1,6 +1,9 @@
 package partnerCodeInHerePlease;
 
-
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import gui.components.Action;
 import gui.components.Components;
 import simonDavidM.ButtonInterfaceDavid;
@@ -40,8 +43,8 @@ public class ButtonD extends Components implements ButtonInterfaceDavid {
     }
 
     @Override
-    public void setAction(Action a) {
-    	this.action = a;
+    public void setAction(Action action) {
+    	this.action = action;
     	update();
     }
 

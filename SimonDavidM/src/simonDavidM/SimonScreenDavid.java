@@ -24,40 +24,6 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 	private int sequenceIdx;
 	private ButtonInterfaceDavid[] validMoves; // possible moves.
 	
-	public SimonScreenDavid(int width, int height) {
-		super(width, height);
-		roundNum = 0;
-		lastMove = -1;
-		Thread app = new Thread(this);
-		acceptingInput = false;
-		app.start();
-		
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void run() {
-		
-		acceptingInput = false;
-		moves.add(getMove()); // simon says new move.
-		++roundNum;
-		// update current progress(state).
-		progress.updateRound(roundNum,moves.size());
-		changeText("My move"); // notify the user to follow new sequence.
-		label.setText(""); // reset screen message.
-		blinkSequence(); // play the sequence of moves.
-		changeText("Your turn!"); // new screen message to input user's guess.
-		sequenceIdx = 0;
-		label.setText("");
-		acceptingInput = true;
-
-	}
-
-	
-
-
-
-
 	@Override
 	public void initAllObjects(ArrayList<Visible> viewObjects) {
 		// TODO Auto-generated method stub
@@ -86,37 +52,45 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 							}
 						});
 						blinks.start();
-		}
-		
-		if(sequenceIdx<moves.size()-1){
-			if(b.getColor() == moves.get(sequenceIdx).getButton().getColor()){
-				sequenceIdx++;
-			}
-			else{
-				progress.setgameOver();
-				 acceptingInput = false;
-				System.out.println("game over");
-			}
-		}
-		else{
-			Thread Game = new Thread(SimonScreenDavid.this);
-			Game.start();
+					}
+					
+					if(sequenceIdx<moves.size()-1){
+						if(b.getColor() == moves.get(sequenceIdx).getButton().getColor()){
+							sequenceIdx++;
+						}
+						else{
+							progress.setgameOver();
+							acceptingInput = false;
+							System.out.println("game over");
+						}
+					}
+					else{
+						Thread Game = new Thread(SimonScreenDavid.this);
+						Game.start();
 					}
 				}
 			}
-		);
-		moves = new ArrayList<MoveInterfaceDavid>();
-		moves.add(getMove());
-		moves.add(getMove());
-		
-		viewObjects.add(progress);
-		viewObjects.add(label);
+					);
+			moves = new ArrayList<MoveInterfaceDavid>();
+			moves.add(getMove());
+			moves.add(getMove());
+			
+			viewObjects.add(progress);
+			viewObjects.add(label);
 		}
-
+		
 	}
 
-	
-
+	public SimonScreenDavid(int width, int height) {
+		super(width, height);
+		roundNum = 0;
+		lastMove = -1;
+		Thread app = new Thread(this);
+		acceptingInput = false;
+		app.start();
+		
+		// TODO Auto-generated constructor stub
+	}
 	public MoveInterfaceDavid getMove() {
 		int random = (int)(Math.random()*validMoves.length);
 		while(random == lastMove){
@@ -125,14 +99,41 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		lastMove = random;
 		return new Move(validMoves[random]);
 	}
-
+	public ButtonInterfaceDavid getAButton(int i, int j ){
+		return new ButtonD(i,j);
+	}
 	public ProgressInterfaceDavid getProgress() {
 		// TODO Auto-generated method stub
 		return new Progress();
 	}
-	public ButtonInterfaceDavid getAButton(int i, int j ){
-		return new ButtonD(i,j);
+	@Override
+	public void run() {
+		
+		acceptingInput = false;
+		moves.add(getMove()); // simon says new move.
+		++roundNum;
+		// update current progress(state).
+		progress.updateRound(roundNum,moves.size());
+		changeText("My move"); // notify the user to follow new sequence.
+		label.setText(""); // reset screen message.
+		blinkSequence(); // play the sequence of moves.
+		changeText("Your turn!"); // new screen message to input user's guess.
+		sequenceIdx = 0;
+		label.setText("");
+		acceptingInput = true;
+
+
+	
+
+
 	}
+
+
+	
+
+	
+
+	
 	
 	public void changeText(String s){
 		label.setText(s);
