@@ -121,11 +121,6 @@ public class SimonScreenDavid extends ClickableScreen implements Runnable {
 		sequenceIdx = 0;
 		label.setText("");
 		acceptingInput = true;
-
-
-	
-
-
 	}
 
 
