@@ -6,16 +6,28 @@ import gui.components.Clickable;
 import java.awt.Color;
 
 public interface ButtonInterfaceDavid extends Clickable {
-    // interface methods are by default public.
+	
+	
 
- 
-    public void setColor(Color c);
-    
-    public Color getColor();
-    
-    public void setAction(Action action);
+	void setColor(Color color);
 
-    public void highlight();
+	Color getColor();
 
-    public void dim();
+	void setHColor(Color color);
+
+	Color getHColor();
+
+	void setAction(Action action);
+	
+	void highlight();
+	
+	void dim();
+
+	boolean isLit();
+
+	
+
+	
+
+
 }
